@@ -15,6 +15,10 @@ const router = express.Router();
 
 app.use("/", router);
 
+const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "July", "Aug", "Sept", "Oct", "Nov", "Dec"
+];
+
 router.route("/file/:filename").get((req, res) => {
   let filename = req.params.filename;
   let imagepath = "./assets/" + filename;
@@ -35,33 +39,48 @@ router.route("/task-list").get((req, res, next) => {
   });
 });
 
+router.route("/users").get((req, res, next) => {
+  fs.readFile("model/users.json", "utf8", (err, data) => {
+    if (err) throw err;
+    res.json(JSON.parse(data));
+  });
+});
+
 router.route("/add-new-task").post((req, res, next) => {
   let taskObject = {};
-  taskObject.title = req.body.title;
-  taskObject.description = req.body.description;
-  taskObject.user = [{
-    "username": req.body.user
-  }]
+  taskObject.id = "task-" + (parseInt(req.body.formJSON.total) + 1);
+  taskObject.title = req.body.formJSON.title;
+  taskObject.description = req.body.formJSON.description;
+  taskObject.priority = req.body.formJSON.priority;
+  taskObject.status = "todo";
+
+  taskObject.users = [];
+  taskObject.users.push(JSON.parse(req.body.formJSON.user));
+
+  let date = monthNames[new Date().getMonth()] + ", " + new Date().getDate();
+  taskObject.notification = date;
+
+  console.log(taskObject);
+
   fs.readFile("model/tasks-list.json", "utf8", (err, data) => {
     var TaskList = JSON.parse(data);
     TaskList.push(taskObject);
     TaskList = JSON.stringify(TaskList);
     fs.writeFile("model/tasks-list.json", TaskList, function (err) {
       if (err) throw err;
-      res.json("Task added");
+      res.json("success");
     });
   });
+
 });
 
 router.route("/update-task").post((req, res, next) => {
   let taskId = req.body.id;
   let status = req.body.status;
 
-  console.log(req.body);
-
   fs.readFile("model/tasks-list.json", "utf8", (err, data) => {
     var TaskList = JSON.parse(data);
-    for(let i=0; i < TaskList.length; i++) {
+    for (let i = 0; i < TaskList.length; i++) {
       if (TaskList[i].id === taskId) {
         TaskList[i].status = status;
         var temp = TaskList[i];
@@ -71,6 +90,27 @@ router.route("/update-task").post((req, res, next) => {
       }
     }
     TaskList = JSON.stringify(TaskList);
+
+    fs.writeFile("model/tasks-list.json", TaskList, function (err) {
+      if (err) throw err;
+      res.json("success");
+    });
+  });
+});
+
+router.route("/delete-task").post((req, res, next) => {
+  let taskId = req.body.id;
+
+  fs.readFile("model/tasks-list.json", "utf8", (err, data) => {
+    var TaskList = JSON.parse(data);
+    for (let i = 0; i < TaskList.length; i++) {
+      if (TaskList[i].id === taskId) {
+        TaskList.splice(i, 1);
+        break;
+      }
+    }
+    TaskList = JSON.stringify(TaskList);
+
     fs.writeFile("model/tasks-list.json", TaskList, function (err) {
       if (err) throw err;
       res.json("success");

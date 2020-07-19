@@ -1,10 +1,10 @@
 import React from "react";
+import Popup from "reactjs-popup";
 import axios from "axios";
 import {
   AiOutlineStar,
   AiOutlineUser,
   AiOutlineClockCircle,
-  AiOutlinePlus,
 } from "react-icons/ai";
 import TaskInfo from "./task";
 import AddNewTask from "../NewTask/NewTask";
@@ -15,7 +15,6 @@ class TaskDashboard extends React.Component {
     this.state = {
       taskData: [],
       dragObjectId: "",
-      newTask: {}
     };
     this.onDragOver = this.onDragOver.bind(this);
     this.dragStart = this.dragStart.bind(this);
@@ -27,6 +26,7 @@ class TaskDashboard extends React.Component {
     this.getTasksList();
   }
 
+  // Function to get list of all tasks
   getTasksList = () => {
     axios.get(`http://localhost:4000/task-list`).then((res) => {
       const taskData = res.data;
@@ -34,20 +34,22 @@ class TaskDashboard extends React.Component {
         taskData: taskData,
       });
     });
-  }
-
+  };
+  // Function to prevent default drag event
   onDragOver = (e) => {
     e.preventDefault();
   };
 
+  // Function to get dragged task ID
   dragStart = (event) => {
     this.state.dragObjectId = event.target.id;
   };
 
+  // Function to update tasks on Drop
   onDrop = (e) => {
     let target = e.currentTarget.id;
     let taskID = this.state.dragObjectId;
-
+    // Function to update the send task data
     axios
       .post("http://localhost:4000/update-task", {
         status: target,
@@ -62,28 +64,28 @@ class TaskDashboard extends React.Component {
   };
 
   render() {
-    // Todo tasks
+    // Todo tasks list
     const toDoTasks = this.state.taskData.filter((task) => {
       if (task.status === "todo") {
         return task;
       }
     });
 
-    // In progress task
+    // In progress task list
     const inProgressTasks = this.state.taskData.filter((task) => {
       if (task.status === "inProgress") {
         return task;
       }
     });
 
-    //   In review tasks
+    //   In review tasks list
     const inReviewTasks = this.state.taskData.filter((task) => {
       if (task.status === "inReview") {
         return task;
       }
     });
 
-    //   Completed tasks
+    //   Completed tasks list
     const completedTasks = this.state.taskData.filter((task) => {
       if (task.status === "done") {
         return task;
@@ -93,11 +95,6 @@ class TaskDashboard extends React.Component {
     return (
       <div className="dashboard">
         <div className="container">
-          <AddNewTask
-            addTask={this.submitForm}
-            newTask={this.state.newTask}
-            taskData={this.state.taskData}
-          />
           <div className="dashboard-heading">
             <div className="star-icon">
               <AiOutlineStar size={24} color={"#888"} />
@@ -259,7 +256,22 @@ class TaskDashboard extends React.Component {
             </div>
           </div>
         </div>
-        <div className="add-new-task">{/* <AiOutlinePlus size={24} /> */}</div>
+        <Popup
+          modal
+          trigger={
+            <div className="add-new-task">
+              <span>&#9547;</span>
+            </div>
+          }
+        >
+          {(close) => (
+            <AddNewTask
+              total={this.state.taskData.length}
+              refreshTasks={this.getTasksList}
+              close={close}
+            />
+          )}
+        </Popup>
       </div>
     );
   }
