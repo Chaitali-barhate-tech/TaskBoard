@@ -59,8 +59,21 @@ class TaskDashboard extends React.Component {
         console.log(res);
         if (res.data == "success") {
           this.getTasksList();
+          window.scrollTo(0, document.body.scrollHeight);
         }
       });
+  };
+
+  removeTask = (taskID) => {
+     axios
+       .post("http://localhost:4000/delete-task", {
+         id: taskID,
+       })
+       .then((res) => {
+         if (res.data == "success") {
+           this.getTasksList();
+         }
+       });
   };
 
   render() {
@@ -151,7 +164,7 @@ class TaskDashboard extends React.Component {
                       className="draggable"
                       onDragStart={(e) => this.dragStart(e)}
                     >
-                      <TaskInfo task={task} />
+                      <TaskInfo task={task} deleteTask={this.removeTask} />
                     </li>
                   ))}
                 </ul>
@@ -186,7 +199,7 @@ class TaskDashboard extends React.Component {
                       className="draggable"
                       onDragStart={(e) => this.dragStart(e)}
                     >
-                      <TaskInfo task={task} />
+                      <TaskInfo task={task} deleteTask={this.removeTask} />
                     </li>
                   ))}
                 </ul>
@@ -217,7 +230,7 @@ class TaskDashboard extends React.Component {
                       className="draggable"
                       onDragStart={(e) => this.dragStart(e)}
                     >
-                      <TaskInfo task={task} />
+                      <TaskInfo task={task} deleteTask={this.removeTask} />
                     </li>
                   ))}
                 </ul>
@@ -248,7 +261,7 @@ class TaskDashboard extends React.Component {
                       className="draggable"
                       onDragStart={(e) => this.dragStart(e)}
                     >
-                      <TaskInfo task={task} />
+                      <TaskInfo task={task} deleteTask={this.removeTask} />
                     </li>
                   ))}
                 </ul>

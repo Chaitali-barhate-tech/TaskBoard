@@ -5,7 +5,9 @@ function FixedHeader() {
   return (
     <div className="fixed-left-header">
       <div className="fixed-header-items">
-        <div className="logo"></div>
+        <div className="logo">
+          <img src="http://localhost:4000/file/cam.png" />
+        </div>
         <div className="nav-links">
           <ul>
             <li>

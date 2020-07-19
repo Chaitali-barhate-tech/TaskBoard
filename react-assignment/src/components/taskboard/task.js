@@ -4,6 +4,7 @@ import { FaPaperclip, FaBell, FaComment, FaCheck } from "react-icons/fa";
 function TaskInfo(props) {
   return (
     <div className={"task " + props.task.priority}>
+      <div class="delete-task" onClick={() => props.deleteTask(props.task.id)}><span>&#9587;</span></div>
       <div className="task-title">
         <h3>{props.task.title}</h3>
       </div>

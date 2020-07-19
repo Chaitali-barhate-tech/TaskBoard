@@ -38,6 +38,7 @@ class AddNewTask extends React.Component {
         if (res.data == "success") {
           refreshChild();
           closePopup();
+          window.scrollTo(0, document.body.scrollHeight);
         }
       });
   };
