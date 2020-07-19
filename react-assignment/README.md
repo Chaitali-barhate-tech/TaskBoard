@@ -3,7 +3,6 @@
 - [react-full-stack](#react-full-stack)
 - [Introduction](#introduction)
 - [Documentation](#documentation)
-- [Folder Structure](#folder-structure)
 - [Setup](#Setup)
 - [Unit Testing](#installation-guide)
 
@@ -26,23 +25,6 @@ Each task has below details:
 The data is stored in json files.
 
 ## Documentation
-
-### Folder Structure
-
-react-assignment/ 
-├── api/  
-    ├── server.js     # Contains backend code.  
-├── assets/
-├── build/            # Contains frontend production build code. 
-    ├── static      
-        ├── css  
-        ├── js  
-        ├── media  
-├── model/            # Contains JSON files to store tasks data. 
-├── public/  
-├── src               # Contains frontend code.  
-
-└── README.md  
 
 ### Setup
 1. Open the root directory of the project.
