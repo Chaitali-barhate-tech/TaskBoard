@@ -21,6 +21,7 @@ class AddNewTask extends React.Component {
     });
   };
 
+  // Get list of all the users
   componentDidMount() {
     this.getUsers();
   }
@@ -31,7 +32,6 @@ class AddNewTask extends React.Component {
     let formJSON = this.formToJSON(
       document.getElementById("add-task-form").elements
     );
-    console.log(formJSON);
     axios
       .post("http://localhost:4000/add-new-task", { formJSON })
       .then((res) => {
@@ -80,7 +80,12 @@ class AddNewTask extends React.Component {
             <input type="hidden" name="total" value={this.props.total} />
             <div className="input-field">
               <label>Title : </label>
-              <input type="text" name="title" placeholder="Please enter title" required />
+              <input
+                type="text"
+                name="title"
+                placeholder="Please enter title"
+                required
+              />
             </div>
             <div className="input-field">
               <label>Description : </label>

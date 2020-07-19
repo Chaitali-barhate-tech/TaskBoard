@@ -31,7 +31,7 @@ The data is stored in json files.
 2. Go to "react-assignment" folder.
 3. Open bash / command prompt at same level.
 4. run npm install
-5. Once the installation is completed, run "npm start command", which will start express server and run frontend production build code.
+5. Once the installation is completed, run "npm start" command, which will start express server and run frontend production build code.
 6. After the server is listening, hit "http://localhost:4000/" to start the unit testing.
 
 

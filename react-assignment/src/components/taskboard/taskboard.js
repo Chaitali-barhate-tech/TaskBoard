@@ -22,6 +22,7 @@ class TaskDashboard extends React.Component {
     this.getTasksList = this.getTasksList.bind(this);
   }
 
+  // Get list of all the tasks on page load
   componentDidMount() {
     this.getTasksList();
   }
@@ -56,7 +57,6 @@ class TaskDashboard extends React.Component {
         id: taskID,
       })
       .then((res) => {
-        console.log(res);
         if (res.data == "success") {
           this.getTasksList();
           window.scrollTo(0, document.body.scrollHeight);
@@ -65,15 +65,15 @@ class TaskDashboard extends React.Component {
   };
 
   removeTask = (taskID) => {
-     axios
-       .post("http://localhost:4000/delete-task", {
-         id: taskID,
-       })
-       .then((res) => {
-         if (res.data == "success") {
-           this.getTasksList();
-         }
-       });
+    axios
+      .post("http://localhost:4000/delete-task", {
+        id: taskID,
+      })
+      .then((res) => {
+        if (res.data == "success") {
+          this.getTasksList();
+        }
+      });
   };
 
   render() {
